@@ -9,6 +9,8 @@ using System.Threading.RateLimiting;
 using Microsoft.AspNetCore.RateLimiting;
 using System.Text.Json.Serialization;
 using System.Text.Json;
+using FlightInformationAPI.Middlewares;
+using FlightInformationAPI.DTOs;
 
 namespace FlightInformationAPI
 {
@@ -22,12 +24,13 @@ namespace FlightInformationAPI
             builder.Services.AddDbContext<FlightDbContext>(options =>
                 options.UseInMemoryDatabase("FlightInformation"));
 
-            builder.Services.AddControllers()
+                builder.Services.AddControllers()
                   .AddJsonOptions(options =>
                   {
                       options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
                       options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter(JsonNamingPolicy.CamelCase));
                   });
+
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
@@ -46,10 +49,7 @@ namespace FlightInformationAPI
             builder.Services.AddValidatorsFromAssemblyContaining<FlightUpdateDtoValidator>();
             builder.Services.AddValidatorsFromAssemblyContaining<FlightCreateDtoValidator>();
             builder.Services.AddFluentValidationAutoValidation();
-
-
-
-
+      
             var app = builder.Build();
 
             //Seed the memory with flight data
@@ -69,6 +69,8 @@ namespace FlightInformationAPI
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseMiddleware<ExceptionHandlingMiddleware>();
 
             app.UseAuthorization();
 

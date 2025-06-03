@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using FlightInformationAPI.DBContext;
 using FlightInformationAPI.DTOs;
-using FlightInformationAPI.Enumerations;
 using FlightInformationAPI.Interfaces;
 using FlightInformationAPI.Models;
 using Microsoft.EntityFrameworkCore;
@@ -22,14 +22,18 @@ namespace FlightInformationAPI.Services
 
         public async Task<IEnumerable<FlightDto>> GetAllAsync(int pageNumber, int pageSize)
         {
-            var query = _context.Flights.AsQueryable();
+            if (pageNumber <= 0) pageNumber = 1;
+            if (pageSize <= 0 || pageSize > 100) pageSize = 10;  // max 100 per page
 
-            var pagedFlights = await query
-                .Skip((pageNumber - 1) * pageSize)
-                .Take(pageSize)
-                .ToListAsync();
+            var pagedFlights = await _context.Flights
+             .AsNoTracking()
+             .ProjectTo<FlightDto>(_mapper.ConfigurationProvider)
+             .Skip((pageNumber - 1) * pageSize)
+             .Take(pageSize)
+             .ToListAsync();
 
-            return _mapper.Map<IEnumerable<FlightDto>>(pagedFlights);
+            return pagedFlights;
+
         }
 
         public async Task<FlightDto?> GetByIdAsync(int id)
@@ -49,7 +53,8 @@ namespace FlightInformationAPI.Services
         public async Task UpdateAsync(int id, FlightUpdateDto updateDto)
         {
             var flight = await _context.Flights.FindAsync(id);
-            if (flight == null) return;
+            if (flight == null)
+                throw new KeyNotFoundException($"Flight with ID {id} not found.");
 
             _mapper.Map(updateDto, flight);
             await _context.SaveChangesAsync();
@@ -72,13 +77,18 @@ namespace FlightInformationAPI.Services
         }
 
         public async Task<IEnumerable<FlightDto>> SearchAsync(
-                  string? airline,
-                  string? departureAirport,
-                  string? arrivalAirport,
-                  DateTime? fromDate,
-                  DateTime? toDate)
+           string? airline,
+           string? departureAirport,
+           string? arrivalAirport,
+           DateTime? fromDate,
+           DateTime? toDate,
+           int pageNumber,
+           int pageSize)
         {
-            var query = _context.Flights.AsQueryable();
+            if (pageNumber <= 0) pageNumber = 1;
+            if (pageSize <= 0 || pageSize > 100) pageSize = 10;  // max 100 per page
+
+            var query = _context.Flights.AsQueryable().AsNoTracking();
 
             if (!string.IsNullOrWhiteSpace(airline))
                 query = query.Where(f => f.Airline.Contains(airline));
@@ -95,8 +105,16 @@ namespace FlightInformationAPI.Services
             if (toDate.HasValue)
                 query = query.Where(f => f.ArrivalTime <= toDate.Value);
 
-            var flights = await query.ToListAsync();
-            return _mapper.Map<IEnumerable<FlightDto>>(flights);
+            query = query.OrderBy(f => f.Id);
+
+            query = query
+                   .Skip((pageNumber - 1) * pageSize)
+                   .Take(pageSize);
+
+
+            return await query
+                .ProjectTo<FlightDto>(_mapper.ConfigurationProvider)
+                .ToListAsync();
         }
 
     }

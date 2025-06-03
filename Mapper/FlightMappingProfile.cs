@@ -12,8 +12,11 @@ namespace FlightInformationAPI.Mapper
         {
             CreateMap<Flight, FlightDto>()
                 .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.ToString()));
-            CreateMap<FlightCreateDto, Flight>();
-            CreateMap<FlightUpdateDto, Flight>();
+            CreateMap<FlightCreateDto, Flight>()
+                .ForMember(dest => dest.Status, opt =>
+                    opt.MapFrom(src => Enum.Parse<FlightStatus>(src.Status, true))); 
+            CreateMap<FlightUpdateDto, Flight>()
+                .ForMember(dest => dest.Status, opt => opt.MapFrom(src => Enum.Parse<FlightStatus>(src.Status, true)));
         }
     }
 }

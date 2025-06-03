@@ -1,6 +1,4 @@
-﻿using FlightInformationAPI.Enumerations;
-
-namespace FlightInformationAPI.DTOs
+﻿namespace FlightInformationAPI.DTOs
 {
     public class FlightDto
     {

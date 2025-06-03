@@ -10,6 +10,6 @@ namespace FlightInformationAPI.DTOs
         public string ArrivalAirport { get; set; } = string.Empty;
         public DateTime DepartureTime { get; set; }
         public DateTime ArrivalTime { get; set; }
-        public FlightStatus Status { get; set; }
+        public string Status { get; set; } = string.Empty;
     }
 }

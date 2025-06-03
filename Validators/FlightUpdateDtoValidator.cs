@@ -29,9 +29,9 @@ namespace FlightInformationAPI.Validators
                 .NotEmpty().WithMessage("Arrival time is required.")
                 .GreaterThan(f => f.DepartureTime).WithMessage("Arrival time must be after departure time.");
 
-            RuleFor(f => f.Status)
+            RuleFor(f => f.Status.ToLower())
                 .NotEmpty().WithMessage("Status is required.")
-                .Must(status => new[] { "Scheduled", "InAir", "Delayed", "Landed", "Cancelled" }
+                .Must(status => new[] { "scheduled", "inair", "delayed", "landed", "cancelled" }
                     .Contains(status))
                 .WithMessage("Status must be one of: Scheduled, InAir, Delayed, Landed, Cancelled.");
         }

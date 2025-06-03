@@ -16,6 +16,8 @@ namespace FlightInformationAPI.Interfaces
             string? departureAirport,
             string? arrivalAirport,
             DateTime? fromDate,
-            DateTime? toDate);
+            DateTime? toDate,
+            int pageNumber,
+            int pageSize);
     }
 }

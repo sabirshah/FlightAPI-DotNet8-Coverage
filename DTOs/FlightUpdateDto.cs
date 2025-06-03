@@ -1,4 +1,6 @@
-﻿namespace FlightInformationAPI.DTOs
+﻿using FlightInformationAPI.Enumerations;
+
+namespace FlightInformationAPI.DTOs
 {
     public class FlightUpdateDto
     {

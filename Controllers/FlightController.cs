@@ -1,8 +1,6 @@
 ﻿using FlightInformationAPI.DTOs;
 using FlightInformationAPI.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.RateLimiting;
-using Microsoft.Extensions.Logging;
 
 [ApiController]
 [Route("api/[controller]")]
@@ -17,20 +15,17 @@ public class FlightsController : ControllerBase
         _logger = logger;
     }
 
-    // GET: api/flights
+    // GET: api/flights  
     [HttpGet]
     public async Task<ActionResult<IEnumerable<FlightDto>>> GetAll(
       [FromQuery] int pageNumber = 1,
       [FromQuery] int pageSize = 10)
     {
-        if (pageNumber <= 0) pageNumber = 1;
-        if (pageSize <= 0 || pageSize > 100) pageSize = 10;  // max 100 per page
-
         var pagedFlights = await _flightService.GetAllAsync(pageNumber, pageSize);
         return Ok(pagedFlights);
     }
 
-    // GET: api/flights/{id}
+    // GET: api/flights/{id}  
     [HttpGet("{id:int}")]
     public async Task<ActionResult<FlightDto>> GetById(int id)
     {
@@ -43,35 +38,30 @@ public class FlightsController : ControllerBase
         return Ok(flight);
     }
 
-    // POST: api/flights
+    // POST: api/flights  
     [HttpPost]
     public async Task<ActionResult<FlightDto>> Create([FromBody] FlightCreateDto createDto)
     {
-        if (!ModelState.IsValid)
-            return BadRequest(ModelState);
-
         var flight = await _flightService.CreateAsync(createDto);
-
         return CreatedAtAction(nameof(GetById), new { id = flight.Id }, flight);
     }
 
-    // PUT: api/flights/{id}
+    // PUT: api/flights/{id}  
     [HttpPut("{id:int}")]
     public async Task<IActionResult> Update(int id, [FromBody] FlightUpdateDto updateDto)
     {
-        if (!ModelState.IsValid)
-            return BadRequest(ModelState);
-
         var exists = await _flightService.ExistsAsync(id);
         if (!exists)
+        {
+            _logger.LogWarning("Flight with id {Id} not found.", id);
             return NotFound();
+        }
 
         await _flightService.UpdateAsync(id, updateDto);
-
         return NoContent();
     }
 
-    // DELETE: api/flights/{id}
+    // DELETE: api/flights/{id}  
     [HttpDelete("{id:int}")]
     public async Task<IActionResult> Delete(int id)
     {
@@ -84,16 +74,18 @@ public class FlightsController : ControllerBase
         return NoContent();
     }
 
-    // GET: api/flights/search?airline=xxx&departureAirport=yyy&fromDate=2025-01-01&toDate=2025-02-01
+    // GET: api/flights/search?airline=xxx&departureAirport=yyy&fromDate=2025-01-01&toDate=2025-02-01  
     [HttpGet("search")]
     public async Task<ActionResult<IEnumerable<FlightDto>>> Search(
         [FromQuery] string? airline,
         [FromQuery] string? departureAirport,
         [FromQuery] string? arrivalAirport,
         [FromQuery] DateTime? fromDate,
-        [FromQuery] DateTime? toDate)
+        [FromQuery] DateTime? toDate,
+        [FromQuery] int pageNumber = 1,
+        [FromQuery] int pageSize = 10)
     {
-        var results = await _flightService.SearchAsync(airline, departureAirport, arrivalAirport, fromDate, toDate);
+        var results = await _flightService.SearchAsync(airline, departureAirport, arrivalAirport, fromDate, toDate, pageNumber, pageSize);
         return Ok(results);
     }
 }
