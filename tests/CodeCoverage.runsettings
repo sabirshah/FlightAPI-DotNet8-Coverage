@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RunSettings>
+	<DataCollectionRunSettings>
+		<DataCollectors>
+			<DataCollector friendlyName="XPlat Code Coverage">
+				<Configuration>
+					<CodeCoverage>
+
+						<!-- Specify output format -->
+						<Format>cobertura</Format>
+
+						<!-- Include only application modules -->
+						<Include>
+							<ModulePath>.*FlightInformationAPI.*</ModulePath>
+						</Include>
+
+						<!-- Exclude test, validation, and system modules -->
+						<Exclude>
+							<ModulePath>.*UnitTests.*</ModulePath>
+							<ModulePath>.*FluentValidation.*</ModulePath>
+							<ModulePath>.*Microsoft.*</ModulePath>
+							<ModulePath>.*System.*</ModulePath>
+						</Exclude>
+
+					</CodeCoverage>
+				</Configuration>
+			</DataCollector>
+		</DataCollectors>
+	</DataCollectionRunSettings>
+</RunSettings>
