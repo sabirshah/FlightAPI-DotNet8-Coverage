@@ -1,4 +1,3 @@
-**FlightInformationAPI**
 The API is built with .NET 8 and supports full CRUD operations using EF Core with an in-memory database. It follows REST API standards and includes automated tests with code coverage.
 
 **How to Run the API**
