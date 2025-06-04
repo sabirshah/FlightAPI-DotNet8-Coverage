@@ -19,7 +19,7 @@ namespace FlightInformationAPI.Controllers
 
         // GET: api/flights  
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<FlightDto>>> GetAll(
+        public async Task<ActionResult<IEnumerable<FlightDto>>> GetAllFligths(
           [FromQuery] int pageNumber = 1,
           [FromQuery] int pageSize = 10)
         {
@@ -29,7 +29,7 @@ namespace FlightInformationAPI.Controllers
 
         // GET: api/flights/{id}  
         [HttpGet("{id:int}")]
-        public async Task<ActionResult<FlightDto>> GetById(int id)
+        public async Task<ActionResult<FlightDto>> GetFlightById(int id)
         {
             var flight = await _flightService.GetByIdAsync(id);
             if (flight == null)
@@ -42,15 +42,15 @@ namespace FlightInformationAPI.Controllers
 
         // POST: api/flights  
         [HttpPost]
-        public async Task<ActionResult<FlightDto>> Create([FromBody] FlightCreateDto createDto)
+        public async Task<ActionResult<FlightDto>> CreateFlight([FromBody] FlightCreateDto createDto)
         {
             var flight = await _flightService.CreateAsync(createDto);
-            return CreatedAtAction(nameof(GetById), new { id = flight.Id }, flight);
+            return CreatedAtAction(nameof(GetFlightById), new { id = flight.Id }, flight);
         }
 
         // PUT: api/flights/{id}  
         [HttpPut("{id:int}")]
-        public async Task<IActionResult> Update(int id, [FromBody] FlightUpdateDto updateDto)
+        public async Task<IActionResult> UpdateFlight(int id, [FromBody] FlightUpdateDto updateDto)
         {
             var exists = await _flightService.ExistsAsync(id);
             if (!exists)
@@ -65,7 +65,7 @@ namespace FlightInformationAPI.Controllers
 
         // DELETE: api/flights/{id}  
         [HttpDelete("{id:int}")]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> DeleteFlight(int id)
         {
             var exists = await _flightService.ExistsAsync(id);
             if (!exists)
@@ -78,7 +78,7 @@ namespace FlightInformationAPI.Controllers
 
         // GET: api/flights/search?airline=xxx&departureAirport=yyy&fromDate=2025-01-01&toDate=2025-02-01  
         [HttpGet("search")]
-        public async Task<ActionResult<IEnumerable<FlightDto>>> Search(
+        public async Task<ActionResult<IEnumerable<FlightDto>>> SearchFlight(
             [FromQuery] string? airline,
             [FromQuery] string? departureAirport,
             [FromQuery] string? arrivalAirport,

@@ -35,11 +35,11 @@ namespace UnitTests.Tests
             // Seed CSV data
             var seeder = _serviceProvider.GetRequiredService<FlightDataSeeder>();
             var currentDir = new DirectoryInfo(AppContext.BaseDirectory);
-            while (currentDir != null && !Directory.Exists(Path.Combine(currentDir.FullName, "FlightInformationAPI")))
+            while (currentDir != null && !Directory.Exists(Path.Combine(currentDir.FullName, "FlightAPI-DotNet8-Coverage")))
             {
                 currentDir = currentDir.Parent;
             }
-            var csvPath = Path.Combine(currentDir.FullName + @"\FlightInformationAPI", @"src\Data", "FlightInformation.csv");
+            var csvPath = Path.Combine(currentDir.FullName + @"\FlightAPI-DotNet8-Coverage", @"src\Data", "FlightInformation.csv");
             seeder.Seed(csvPath);
 
             _flightService = _serviceProvider.GetRequiredService<IFlightService>();
