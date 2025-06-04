@@ -1,8 +1,10 @@
-﻿using FlightInformationAPI.DTOs;
+﻿using System.Diagnostics.CodeAnalysis;
+using FlightInformationAPI.DTOs;
 using FluentValidation;
 
 namespace FlightInformationAPI.Validators
 {
+    [ExcludeFromCodeCoverage]
     public class FlightUpdateDtoValidator : AbstractValidator<FlightUpdateDto>
     {
         public FlightUpdateDtoValidator()

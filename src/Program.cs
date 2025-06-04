@@ -11,9 +11,11 @@ using System.Text.Json.Serialization;
 using System.Text.Json;
 using FlightInformationAPI.Middlewares;
 using FlightInformationAPI.DTOs;
+using System.Diagnostics.CodeAnalysis;
 
 namespace FlightInformationAPI
 {
+    [ExcludeFromCodeCoverage]
     public class Program
     {
         public static void Main(string[] args)
