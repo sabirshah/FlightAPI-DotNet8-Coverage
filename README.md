@@ -28,7 +28,7 @@ FlightInformationAPI/
 ```
 The structure follows an **n-layered approach** with a clear **separation of concerns**, enabling easier testing, scaling, and maintenance.
 
-## **Opration and Endpoints**
+## **Operation and Endpoints**
 The following table shows how operations are mapped to HTTP methods.
 ```
 | Operation Name   | URL                       | HTTP Method | Input                                        | Output           | Description                                        | Response Codes                                                            |
