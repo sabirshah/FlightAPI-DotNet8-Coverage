@@ -28,11 +28,26 @@ FlightInformationAPI/
 ```
 The structure follows an **n-layered approach** with a clear **separation of concerns**, enabling easier testing, scaling, and maintenance.
 
+## **Opration and Endpoints**
+The following table shows how operations are mapped to HTTP methods.
+```
+| Operation Name   | URL                       | HTTP Method | Input                                        | Output           | Description                                        | Response Codes                                                            |
+|------------------|---------------------------|-------------|----------------------------------------------|------------------|----------------------------------------------------|---------------------------------------------------------------------------|
+| GetAllFlights()  | `/api/flights`            | GET         | None                                         | List of flights  | Retrieve all flight records                        | `200 OK`, `500 Internal Server Error`                                     |
+| GetFlightById()  | `/api/flights/{id}`       | GET         | Flight ID                                    | Flight details   | Retrieve a flight by its unique ID                 | `200 OK`, `404 Not Found`, `500 Internal Server Error`                    |
+| CreateFlight()   | `/api/flights`            | POST        | Flight details (FlightCreateDto)             | Created flight   | Create a new flight                                | `201 Created`, `400 Bad Request`, `500 Internal Server Error`             |
+| UpdateFlight()   | `/api/flights/{id}`       | PUT         | Flight ID + updated data (FlightUpdateDto)   | Updated flight   | Update an existing flight by ID                    | `200 OK`, `400 Bad Request`, `404 Not Found`, `500 Internal Server Error` |
+| DeleteFlight()   | `/api/flights/{id}`       | DELETE      | Flight ID                                    | No content       | Delete a flight by its ID                          | `204 No Content`, `404 Not Found`, `500 Internal Server Error`            |
+| SearchFlights()  | `/api/flights/search`     | GET         | Query params (airline, airport, date range)  | Matching flights | Search flights by airline, airport, or date range  | `200 OK`, `400 Bad Request`, `500 Internal Server Error`                  |
+
+```
+
+
 ## **How to Run the API**
 1. Clone the repository using the following command: 
    <pre>git clone https://github.com/sabirshah/FlightAPI-DotNet8-Coverage.git</pre>
 2. Navigate to the main project directory and then to the src folder: 
-   <pre>cd FlightInformationAPI/src</pre>
+   <pre>cd FlightAPI-DotNet8-Coverage/src</pre>
 3. Restore the dependencies using: 
    <pre>dotnet restore</pre>
 4. Run the application using: 
