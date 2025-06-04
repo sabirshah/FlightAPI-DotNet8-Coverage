@@ -27,7 +27,7 @@ public class FlightsControllerTests
         _flightServiceMock.Setup(s => s.GetAllAsync(1, 10)).ReturnsAsync(flights);
 
         // Act
-        var result = await _controller.GetAll();
+        var result = await _controller.GetAllFligths();
 
         // Assert
         var okResult = Assert.IsType<OkObjectResult>(result.Result);
@@ -42,7 +42,7 @@ public class FlightsControllerTests
         _flightServiceMock.Setup(s => s.GetByIdAsync(1)).ReturnsAsync(flight);
 
         // Act
-        var result = await _controller.GetById(1);
+        var result = await _controller.GetFlightById(1);
 
         // Assert
         var okResult = Assert.IsType<OkObjectResult>(result.Result);
@@ -56,7 +56,7 @@ public class FlightsControllerTests
         _flightServiceMock.Setup(s => s.GetByIdAsync(1)).ReturnsAsync((FlightDto?)null);
 
         // Act
-        var result = await _controller.GetById(1);
+        var result = await _controller.GetFlightById(1);
 
         // Assert
         Assert.IsType<NotFoundResult>(result.Result);
@@ -71,12 +71,12 @@ public class FlightsControllerTests
         _flightServiceMock.Setup(s => s.CreateAsync(createDto)).ReturnsAsync(flight);
 
         // Act
-        var result = await _controller.Create(createDto);
+        var result = await _controller.CreateFlight(createDto);
 
         // Assert
         var createdResult = Assert.IsType<CreatedAtActionResult>(result.Result);
         Assert.Equal(flight, createdResult.Value);
-        Assert.Equal(nameof(_controller.GetById), createdResult.ActionName);
+        Assert.Equal(nameof(_controller.GetFlightById), createdResult.ActionName);
         Assert.Equal(1, createdResult.RouteValues["id"]);
     }
 
@@ -88,7 +88,7 @@ public class FlightsControllerTests
         _flightServiceMock.Setup(s => s.ExistsAsync(1)).ReturnsAsync(true);
 
         // Act
-        var result = await _controller.Update(1, updateDto);
+        var result = await _controller.UpdateFlight(1, updateDto);
 
         // Assert
         Assert.IsType<NoContentResult>(result);
@@ -103,7 +103,7 @@ public class FlightsControllerTests
         _flightServiceMock.Setup(s => s.ExistsAsync(1)).ReturnsAsync(false);
 
         // Act
-        var result = await _controller.Update(1, updateDto);
+        var result = await _controller.UpdateFlight(1, updateDto);
 
         // Assert
         Assert.IsType<NotFoundResult>(result);
@@ -117,7 +117,7 @@ public class FlightsControllerTests
         _flightServiceMock.Setup(s => s.ExistsAsync(1)).ReturnsAsync(true);
 
         // Act
-        var result = await _controller.Delete(1);
+        var result = await _controller.DeleteFlight(1);
 
         // Assert
         Assert.IsType<NoContentResult>(result);
@@ -131,7 +131,7 @@ public class FlightsControllerTests
         _flightServiceMock.Setup(s => s.ExistsAsync(1)).ReturnsAsync(false);
 
         // Act
-        var result = await _controller.Delete(1);
+        var result = await _controller.DeleteFlight(1);
 
         // Assert
         Assert.IsType<NotFoundResult>(result);
@@ -146,7 +146,7 @@ public class FlightsControllerTests
         _flightServiceMock.Setup(s => s.SearchAsync("A", "D", "A", null, null, 1, 10)).ReturnsAsync(flights);
 
         // Act
-        var result = await _controller.Search("A", "D", "A", null, null, 1, 10);
+        var result = await _controller.SearchFlight("A", "D", "A", null, null, 1, 10);
 
         // Assert
         var okResult = Assert.IsType<OkObjectResult>(result.Result);
