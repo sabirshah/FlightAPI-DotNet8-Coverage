@@ -5,12 +5,9 @@ using FlightInformationAPI.Validators;
 using FluentValidation.AspNetCore;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
-using System.Threading.RateLimiting;
-using Microsoft.AspNetCore.RateLimiting;
 using System.Text.Json.Serialization;
 using System.Text.Json;
 using FlightInformationAPI.Middlewares;
-using FlightInformationAPI.DTOs;
 using System.Diagnostics.CodeAnalysis;
 
 namespace FlightInformationAPI
@@ -69,16 +66,11 @@ namespace FlightInformationAPI
             }
 
             app.UseHttpsRedirection();
-
             app.UseRouting();
-
+            //registering the exception handling middleware
             app.UseMiddleware<ExceptionHandlingMiddleware>();
-
             app.UseAuthorization();
-
-
             app.MapControllers();
-
             app.Run();
         }
     }

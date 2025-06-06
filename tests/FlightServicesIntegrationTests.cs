@@ -25,8 +25,6 @@ namespace UnitTests.Tests
             services.AddScoped<IFlightService, FlightService>();
             services.AddScoped<FlightDataSeeder>();
             services.AddScoped<IFlightCsvLoader, FlightCsvLoader>();
-
-            // Add your actual AutoMapper profile here
             services.AddAutoMapper(typeof(FlightMappingProfile));
 
             _serviceProvider = services.BuildServiceProvider();
