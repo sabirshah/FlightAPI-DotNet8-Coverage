@@ -111,7 +111,7 @@ namespace FlightInformationAPI.Services
                    .Skip((pageNumber - 1) * pageSize)
                    .Take(pageSize);
 
-
+            // Project to DTOs using AutoMapper
             return await query
                 .ProjectTo<FlightDto>(_mapper.ConfigurationProvider)
                 .ToListAsync();

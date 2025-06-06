@@ -1,6 +1,5 @@
 ﻿using FlightInformationAPI.Models;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
 
 namespace FlightInformationAPI.DBContext
 {

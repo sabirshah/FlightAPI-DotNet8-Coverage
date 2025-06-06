@@ -1,6 +1,5 @@
 ﻿using System.Net;
 using System.Text.Json;
-using FluentValidation;
 namespace FlightInformationAPI.Middlewares
 {
     public class ExceptionHandlingMiddleware
